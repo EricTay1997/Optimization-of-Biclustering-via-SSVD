@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+src/ssvd_pkg/__init__.py
+src/ssvd_pkg/ssvd.py
+src/ssvd_pkg_cathy10.egg-info/PKG-INFO
+src/ssvd_pkg_cathy10.egg-info/SOURCES.txt
+src/ssvd_pkg_cathy10.egg-info/dependency_links.txt
+src/ssvd_pkg_cathy10.egg-info/top_level.txt
