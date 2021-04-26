@@ -3,7 +3,7 @@
 #### April 27, 2021
 
 ### Description
-This repository contains a report detailing our implementation, optimization and discussion of the SSVD algorithm in "Biclustering via Sparse Singular Value Decomposition" [1]. We have uploaded our implementations to [PyPI], and provided code to install the package, and reproduce our results.
+This repository contains a report detailing our implementation, optimization and discussion of the SSVD algorithm in "Biclustering via Sparse Singular Value Decomposition" [1]. We have uploaded our implementation to [PyPI], and provided code to install the package and reproduce our results.
 
 ### Files
 - `algorithms.py` contains an implementation of the original and optimized SSVD algorithm, which has been uploaded to [PyPI].
