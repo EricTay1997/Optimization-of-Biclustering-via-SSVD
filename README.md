@@ -11,9 +11,11 @@ This repository contains a report detailing our implementation, optimization and
 - `STA 663L Final Submission.pdf` is the report for our final project.
 
 ### Package for SSVD
-The original and optimized version of SSVD algorithm is now uploaded to [PyPI](https://test.pypi.org/project/ssvd-pkg-cathy10/) and ready for installation via the following command lines:
+The original and optimized version of SSVD algorithm is now uploaded to [PyPI](https://test.pypi.org/project/ssvd-pkg-cathy10/) and ready for installation via the  command:
 
 `pip install ssvd-pkg-cathy10`
+
+The package can then be used as such:
 
 `from ssvd_pkg import ssvd_original, ssvd_new`
 
