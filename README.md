@@ -7,7 +7,7 @@ This repository contains a report detailing our implementation, optimization and
 
 ### Files
 - `algorithms.py` contains an implementation of the original and optimized SSVD algorithm, which has been uploaded to [PyPI](https://test.pypi.org/project/ssvd-pkg-cathy10/).
-- `STA 663L Final Submission.ipynb` downloads the algorithms from [PyPI], and reproduces the results in `STA 663L Final Submission.pdf`.
+- `STA 663L Final Submission.ipynb` downloads the algorithms from [PyPI](https://test.pypi.org/project/ssvd-pkg-cathy10/), and reproduces the results in `STA 663L Final Submission.pdf`.
 - `STA 663L Final Submission.pdf` is the report for our final project.
 
 ### Package for SSVD
