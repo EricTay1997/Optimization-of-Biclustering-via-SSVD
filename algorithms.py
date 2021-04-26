@@ -1,8 +1,10 @@
 import numpy as np
 import numba
 from numba import jit
+from sparsesvd import sparsesvd
+from scipy.sparse import csc_matrix
 
-def ssvd_original(X, tol = 1e-3, lambda_us = None, lambda_vs = None, gamma1s = [2], gamma2s = [2], max_iter = 20):
+def ssvd_original(X, tol = 1e-3, lambda_us = None, lambda_vs = None, gamma1s = [2], gamma2s = [2], max_iter = 20, sparse_decomp = False):
     
     def BIC_v(lambda_v):
         v = abs(v_hat) - lambda_v*w2/2
@@ -18,10 +20,16 @@ def ssvd_original(X, tol = 1e-3, lambda_us = None, lambda_vs = None, gamma1s = [
         u *= np.sign(u_hat)
         return (np.linalg.norm(X - u @ v.T)**2/sigma_sq_hat + np.log(nd)*df, u)
     
-    U, S, V = np.linalg.svd(X, full_matrices = False)
-    u = U[:,0][:,None]
-    v = V[0,:][:,None]
-    s = S[0]
+    if sparse_decomp:
+        u, s, v = sparsesvd(csc_matrix(X), 1)
+        u = u.reshape(-1,1)
+        s = s[0]
+        v = v.reshape(-1,1)
+    else:
+        U, S, V = np.linalg.svd(X, full_matrices = False)
+        u = U[:,0][:,None]
+        v = V[0,:][:,None]
+        s = S[0]
     n, d = X.shape
     nd = n*d
     iter_num = 0
@@ -55,7 +63,7 @@ def ssvd_original(X, tol = 1e-3, lambda_us = None, lambda_vs = None, gamma1s = [
         if all(u_hat == 0):
             u_new = u_hat
         else:
-            sigma_sq_hat = np.linalg.norm(X - u_hat @ v.T)**2/(nd-d)
+            sigma_sq_hat = np.linalg.norm(X - u_hat @ v.T)**2/(nd-n)
             min_BIC_val = float('inf')
             for gamma1 in gamma1s:
                 w1 = np.abs(u_hat)**-gamma1
@@ -78,7 +86,7 @@ def ssvd_original(X, tol = 1e-3, lambda_us = None, lambda_vs = None, gamma1s = [
     if (delta_v_norm >= tol) or (delta_u_norm >= tol):
         print("Failed to converge in {} iterations. Try increasing tolerance, or increasing the maximum number of iterations.".format(iter_num))
     
-    return u, v, s
+    return u, v, (u.T @ X @ v)[0][0]
 
 @jit(nopython=True)
 def BIC_v(lambda_v, v_hat, w2, u, sigma_sq_hat, nd, X):
@@ -117,7 +125,6 @@ def ssvd_new(X, BIC_v = BIC_v, BIC_u = BIC_u, tol = 1e-3, lambda_us = None, lamb
     
     if gamma2s is None:
         gamma2s = [2]
-    
     
     U, S, V = np.linalg.svd(X, full_matrices = False)
     u = U[:,0].copy()
@@ -170,7 +177,7 @@ def ssvd_new(X, BIC_v = BIC_v, BIC_u = BIC_u, tol = 1e-3, lambda_us = None, lamb
         if not u_hat.any():
             u_new = u_hat
         else:
-            sigma_sq_hat = np.linalg.norm(X - u_hat @ v.T)**2/(nd-d)
+            sigma_sq_hat = np.linalg.norm(X - u_hat @ v.T)**2/(nd-n)
             min_BIC_val = 1e8 
             for gamma1 in gamma1s:
                 w1 = np.abs(u_hat)**-gamma1
@@ -203,5 +210,5 @@ def ssvd_new(X, BIC_v = BIC_v, BIC_u = BIC_u, tol = 1e-3, lambda_us = None, lamb
         
         print("Failed to converge in", iter_num, "iterations. Try increasing tolerance, or increasing the maximum number of iterations.")
     
-    return u, v, s
+    return u, v, (u.T @ X @ v)[0][0]
 
