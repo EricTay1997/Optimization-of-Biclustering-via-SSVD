@@ -13,17 +13,19 @@ This repository contains a report detailing our implementation, optimization and
 ### Package for SSVD
 The original and optimized version of SSVD algorithm is now uploaded to [PyPI](https://test.pypi.org/project/ssvd-pkg-cathy10/) and ready for installation via the  command:
 
-`pip install ssvd-pkg-cathy10`
+`pip install -i https://test.pypi.org/simple/ SSVD-pkg-cathy10`
 
 The package can then be used as such:
 
-`from ssvd_pkg import ssvd_original, ssvd_new`
+`from SSVD_pkg.algorithms import ssvd_original, ssvd_new`
 
 `X = np.random.rand(100, 100)`
 
 `u_original, v_original, s_original = ssvd_original(X) # This runs the original algorithm`
 
-`u, v, s = ssvd_new(X) # This runs the optimized algorithm`
+`u_sparsesvd, v_sparsesvd, s_sparsesvd = ssvd_original(X, sparse_decomp = True) # This uses sparsesvd to speed up the initialization of the algorithm`
+
+`u, v, s = ssvd_new(X) # This runs the Numba optimized algorithm`
 
 ### References
 
